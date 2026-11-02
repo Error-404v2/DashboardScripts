@@ -1,0 +1,21 @@
+# --- Real data: NEVER commit (agent names, login / not-ready / utilization records) ---
+*.xlsx
+*.xls
+*.csv
+exprmnt/_sandbox/
+
+# --- The Python scripts stay local (kept in Utiliz/ next to the launcher) ---
+*.py
+
+# --- Personal notes naming colleagues: local only ---
+ref/How To Refai.txt
+
+# --- Local tool / editor state ---
+.claude/
+.vscode/
+__pycache__/
+*.pyc
+*.log
+~$*
+desktop.ini
+Thumbs.db

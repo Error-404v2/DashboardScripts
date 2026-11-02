@@ -1,0 +1,5 @@
+# The launcher .bat files MUST stay CRLF: the header does `more +12 "%~f0"`
+# (a fixed line count) and cmd labels break on LF-only files. "-text" = git never
+# converts line endings on these, so a clone is byte-identical to what was committed.
+*.bat -text
+*.cmd -text
