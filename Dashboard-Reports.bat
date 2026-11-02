@@ -620,9 +620,16 @@ function Confirm-MissingFolders([int[]]$Ids, [bool]$AutoCreate = $false) {
 }
 
 function Write-StepRows {
-    foreach ($st in $Script:Steps) {
+    # Work out every status first so the folder column is as wide as the
+    # longest folder name (+2 spaces) and never runs into the status text.
+    $rows = @()
+    foreach ($st in $Script:Steps) { $rows += [pscustomobject]@{ St = $st; Sx = (Get-StepStatus $st) } }
+    $leafW = 24
+    foreach ($r in $rows) { if ($r.Sx.Leaf.Length + 2 -gt $leafW) { $leafW = $r.Sx.Leaf.Length + 2 } }
+    foreach ($row in $rows) {
+        $st = $row.St
+        $sx = $row.Sx
         $on = [bool]$Script:Sel[$st.Id]
-        $sx = Get-StepStatus $st
         $dim = ''
         if (-not $on) { $dim = 'DarkGray' }
         $mark = '[ ]'
@@ -630,7 +637,7 @@ function Write-StepRows {
         $col = 'DarkGray'
         if ($on) { $col = $Script:LevelColor[$sx.Level] }
         Write-Part ('  [{0}] {1} {2,-20}' -f $st.Id, $mark, $st.Name) $dim
-        Write-Part ('{0,-24}' -f $sx.Leaf) $dim
+        Write-Part ("{0,-$leafW}" -f $sx.Leaf) $dim
         Write-Part $sx.Text $col
         W ''
     }
